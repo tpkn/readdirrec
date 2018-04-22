@@ -39,7 +39,7 @@ Type: _Function_
 
 ## Usage
 ```javascript
-const readdirRec = require('./readdirrec');
+const readdirRec = require('readdirrec');
 
 let list = readdirRec(folder, { filter: item => /\.js$/.test(item) });
 //=> ['file.js', 'file2.js']

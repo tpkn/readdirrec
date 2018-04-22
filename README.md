@@ -1,5 +1,5 @@
- # readdirrec
-Node.js module for deep dir listing 
+# readdirrec   
+Module for deep directory listing 
 
 Straightforward deep directory listing without async stuff, regular expressions and rest of bells and whistles. 
 - Choose if it should be just files, or folders, or both in the results list

@@ -1,5 +1,5 @@
 /*!
- * readdirrec (v2.0.0.20180422), http://tpkn.me/
+ * readdirrec (v2.0.3.20180422), http://tpkn.me/
  */
 
 const fs = require('fs');

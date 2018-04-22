@@ -1,0 +1,22 @@
+{
+   "name": "readdirrec",
+   "main": "readdirrec.js",
+   "version": "2.0.0",
+   "author": {
+      "url": "https://github.com/tpkn/"
+   },
+   "repository": "https://github.com/tpkn/readdirrec",
+   "license": "MIT",
+   "keywords": [
+      "read",
+      "dir",
+      "folder",
+      "path",
+      "sync",
+      "recursive",
+      "filter",
+      "map",
+      "fs",
+      "readdir"
+   ]
+}

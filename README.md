@@ -2,7 +2,7 @@
 Node.js module for deep dir listing 
 
 Straightforward deep directory listing without async stuff, regular expressions and rest of bells and whistles. 
-- Select if it should be just files, or folders, or both in the results list
+- Choose if it should be just files, or folders, or both in the results list
 - Apply native `map` and `filter` methods to the results
 - Turn off recursion if needed
 

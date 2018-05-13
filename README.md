@@ -7,6 +7,13 @@ Straightforward deep directory listing without async stuff, regular expressions 
 - Turn off recursion if needed
 
 
+
+## Installation
+```bash
+npm install readdirrec
+```
+
+
 ## API
 
 ### readdirrec(path[, options])]

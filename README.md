@@ -16,32 +16,35 @@ npm install readdirrec
 
 ## API
 
-### readdirRec(path[, options])]
+### readdirRec(path[, options])
 
 ### path
 **Type**: _String_
 
 
-### options
-#### .dirs
+### options.dirs
 **Type**: _Boolean_  
 **Default**: `false`  
 Include folders in results list
 
 
-#### .files
+### options.files
 **Type**: _Boolean_  
 **Default**: `true`  
 Include files in results list
 
 
-#### .recursive
+### options.recursive
 **Type**: _Boolean_  
 **Default**: `true`  
 If `false` then `path` would be the only level for search
 
 
-#### .filter
+### options.map
+**Type**: _Function_   
+
+
+### options.filter
 **Type**: _Function_ | _String_  
 String argument interprets as a filter by extension    
 ```javascript
@@ -51,9 +54,6 @@ readdirRec(folder, { filter: 'js' });
 readdirRec(folder, { filter: '(js|zip)' });
 // => ['file.js', 'file2.js', 'archive1.zip']
 ```
-
-#### .map
-**Type**: _Function_   
 
 
 

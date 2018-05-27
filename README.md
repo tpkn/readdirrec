@@ -1,5 +1,5 @@
 # readdirrec   
-Module for deep directory listing 
+Module for deep directory listing  
 
 Straightforward deep directory listing without async stuff, regular expressions and rest of bells and whistles. 
 - Choose if it should be just files, or folders, or both in the results list
@@ -16,31 +16,44 @@ npm install readdirrec
 
 ## API
 
-### readdirrec(path[, options])]
+### readdirRec(path[, options])]
 
 ### path
-Type: _String_
+**Type**: _String_
 
 
 ### options
-#### dirs
-Type: _Boolean_  
-Default: `false`
+#### .dirs
+**Type**: _Boolean_  
+**Default**: `false`  
+Include folders in results list
 
-#### files
-Type: _Boolean_  
-Default: `true`
 
-#### recursive
-Type: _Boolean_  
-Default: `true`
+#### .files
+**Type**: _Boolean_  
+**Default**: `true`  
+Include files in results list
 
-#### map
-Type: _Function_  
 
-#### filter
-Type: _Function_
+#### .recursive
+**Type**: _Boolean_  
+**Default**: `true`  
+If `false` then `path` would be the only level for search
 
+
+#### .filter
+**Type**: _Function_ | _String_  
+String argument interprets as a filter by extension    
+```javascript
+readdirRec(folder, { filter: 'js' });
+// => ['file.js', 'file2.js']
+
+readdirRec(folder, { filter: '(js|zip)' });
+// => ['file.js', 'file2.js', 'archive1.zip']
+```
+
+#### .map
+**Type**: _Function_   
 
 
 
@@ -50,6 +63,13 @@ const readdirRec = require('readdirrec');
 
 let list = readdirRec(folder, { filter: item => /\.js$/.test(item) });
 //=> ['file.js', 'file2.js']
+```
+
+Async version:    
+```javascript
+readdirRec.async(folder).then(list => {
+	// => ['file.js', 'file2.js']
+})
 ```
 
 ## Related

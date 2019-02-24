@@ -1,7 +1,6 @@
 /*!
  * readdirrec, http://tpkn.me/
  */
-
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
@@ -10,6 +9,33 @@ const readdir = util.promisify(fs.readdir);
 
 function escapeRegex(str) {
    return str.replace(/[.*+?^${}()]/g, '\\$&');
+}
+
+function modifyResults(results, options){
+   let { folder, filter, relative } = options;
+
+   // Filter using Array.filter()
+   if(typeof filter === 'function'){
+      results = results.filter(filter);
+   }
+
+   // Filter by extension
+   if(typeof filter === 'object' && typeof filter.ext !== 'undefined'){
+      if(Array.isArray(filter.ext)){
+         results = results.filter(item => new RegExp('(' + escapeRegex(filter.ext.join('|')) + ')$', 'i').test(item));
+      }
+
+      if(typeof filter.ext === 'string'){
+         results = results.filter(item => new RegExp(escapeRegex(filter.ext) + '$', 'i').test(item));
+      }
+   }
+
+   // Make relative path
+   if(relative){
+      results = results.map(item => item.replace(folder, ''));
+   }
+
+   return results;
 }
 
 async function ReadDirRec(folder, options = {}){
@@ -54,32 +80,9 @@ async function ReadDirRec(folder, options = {}){
       filter 
    } = options;
    
-   
    let results = await loopThrough(folder);
-
-
-   // Filter using Array.filter()
-   if(typeof filter === 'function'){
-      results = results.filter(filter);
-   }
-
-   // Filter by extension
-   if(typeof filter === 'object' && typeof filter.ext !== 'undefined'){
-      if(Array.isArray(filter.ext)){
-         results = results.filter(item => new RegExp('(' + escapeRegex(filter.ext.join('|')) + ')$', 'i').test(item));
-      }
-
-      if(typeof filter.ext === 'string'){
-         results = results.filter(item => new RegExp(escapeRegex(filter.ext) + '$', 'i').test(item));
-      }
-   }
-
-   // Make relative path
-   if(relative){
-      results = results.map(item => item.replace(folder, ''));
-   }
-
-   return results;
+   
+   return modifyResults(results, options);
 }
 
 function ReadDirRecSync(folder, options = {}){
@@ -124,32 +127,9 @@ function ReadDirRecSync(folder, options = {}){
       filter 
    } = options;
    
-   
    let results = loopThrough(folder);
 
-
-   // Filter using Array.filter()
-   if(typeof filter === 'function'){
-      results = results.filter(filter);
-   }
-
-   // Filter by extension
-   if(typeof filter === 'object' && typeof filter.ext !== 'undefined'){
-      if(Array.isArray(filter.ext)){
-         results = results.filter(item => new RegExp('(' + escapeRegex(filter.ext.join('|')) + ')$', 'i').test(item));
-      }
-
-      if(typeof filter.ext === 'string'){
-         results = results.filter(item => new RegExp(escapeRegex(filter.ext) + '$', 'i').test(item));
-      }
-   }
-
-   // Make relative path
-   if(relative){
-      results = results.map(item => item.replace(folder, ''));
-   }
-
-   return results;
+   return modifyResults(results, options);
 }
 
 module.exports = ReadDirRec;

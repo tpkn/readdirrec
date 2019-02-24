@@ -5,18 +5,11 @@
 const fs = require('fs');
 const path = require('path');
 
-function readdirRec(folder, options = {}, cb){
-   let list = [];
+function escapeRegex(str) {
+   return str.replace(/[.*+?^${}()]/g, '\\$&');
+}
 
-   let dirs = typeof options.dirs === 'undefined' ? false : options.dirs;
-   let files = typeof options.files === 'undefined' ? true : options.files;
-   let recursive = typeof options.recursive === 'undefined' ? true : options.recursive;
-   
-   let map = typeof options.map !== 'function' ? null : options.map;
-   let filter = typeof options.filter !== 'function' ? null : options.filter;
-   let filter_ext = typeof options.filter !== 'string' ? null : options.filter;
-
-
+function ReadDirRec(folder, options = {}){
    function loop(dir){
       try {
          if(fs.existsSync(dir)){
@@ -27,49 +20,62 @@ function readdirRec(folder, options = {}, cb){
 
                if(fs.lstatSync(file).isDirectory()){
                   if(dirs){
-                     list.push(file);
+                     results.push(file);
                   }
                   if(recursive){
                      loop(file);
                   }
                }else{
                   if(files){
-                     list.push(file);
+                     results.push(file);
                   }
                }
             }
          }
-      } catch(err) {
+      }catch(err){
          console.log(err);
       }
    }
 
+
+   /**
+    * Options
+    */
+   let results = [];
+   let { 
+      dirs = false, 
+      files = true, 
+      recursive = true, 
+      relative = false, 
+      filter 
+   } = options;
+   
+   
    loop(folder);
 
 
-   if(filter_ext){
-      list = list.filter(item => new RegExp('\\.' + filter_ext + '$', 'i').test(item));
+   // Filter using Array.filter()
+   if(typeof filter === 'function'){
+      results = results.filter(filter);
    }
 
-   if(filter){
-      list = list.filter(filter);
+   // Filter by extension
+   if(typeof filter === 'object' && typeof filter.ext !== 'undefined'){
+      if(Array.isArray(filter.ext)){
+         results = results.filter(item => new RegExp('(' + escapeRegex(filter.ext.join('|')) + ')$', 'i').test(item));
+      }
+
+      if(typeof filter.ext === 'string'){
+         results = results.filter(item => new RegExp(escapeRegex(filter.ext) + '$', 'i').test(item));
+      }
    }
 
-   if(map){
-      list = list.map(map);
+   // Make relative path
+   if(relative){
+      results = results.map(item => item.replace(folder, ''));
    }
 
-   if(typeof cb === 'function'){
-   	cb(list);
-   }else{
-   	return list;
-   }
+   return results;
 }
 
-
-module.exports = readdirRec;
-module.exports.async = (folder, options = {}) => {
-	return new Promise((resolve, reject) => {
-		readdirRec(folder, options, resolve);
-	})
-};
+module.exports = ReadDirRec;

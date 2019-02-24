@@ -1,10 +1,10 @@
 # readdirrec   
 Module for deep directory listing  
 
-Straightforward deep directory listing without async stuff, regular expressions and rest of bells and whistles. 
 - Choose if it should be just files, or folders, or both
 - Turn off recursion if needed
 - Return results with relative path
+- Use it both synchronous or asynchronous version
 
 
 ## Installation
@@ -24,7 +24,7 @@ ReadDirRec(path[, options])
 **Type**: _String_
 
 
-### options.dirs
+### options.folders
 **Type**: _Boolean_  
 **Default**: `false`  
 Include folders in results list
@@ -56,14 +56,19 @@ Cut the input folder path from the results path
 ```javascript
 const ReadDirRec = require('readdirrec');
 
-ReadDirRec(folder, { filter: file => /config\.js/.test(file) });
+await ReadDirRec(folder, { filter: file => /config\.js/.test(file) })
 // => ['config.js']
 
-ReadDirRec(folder, { filter: { ext: '.js' } });
+await ReadDirRec(folder, { filter: { ext: '.js' } })
 // => ['file1.js', 'file2.js']
 
-ReadDirRec(folder, { filter: { ext: ['.js', '.zip'] } });
+await ReadDirRec(folder, { filter: { ext: ['.js', '.zip'] } })
 // => ['file1.js', 'file2.js', 'archive.zip']
+
+
+// Synchronous version
+ReadDirRec.sync(folder, {})
+// => [ ... ]
 ```
 
 

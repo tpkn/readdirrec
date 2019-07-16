@@ -1,4 +1,4 @@
-# readdirrec   
+# readdirrec [![npm Package](https://img.shields.io/npm/v/readdirrec.svg)](https://www.npmjs.org/package/readdirrec)
 Module for deep directory listing  
 
 - Choose if it should be just files, or folders, or both

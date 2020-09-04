@@ -16,7 +16,7 @@ npm install readdirrec
 ## API
 
 ```javascript
-ReadDirRec(path[, options])
+await rdr(path[, options])
 ```
 
 
@@ -24,16 +24,16 @@ ReadDirRec(path[, options])
 **Type**: _String_
 
 
-### options.folders
-**Type**: _Boolean_  
-**Default**: `false`  
-Include folders in results list
-
-
-### options.files
+### options.files_only
 **Type**: _Boolean_  
 **Default**: `true`  
-Include files in results list
+Find files only
+
+
+### options.folders_only
+**Type**: _Boolean_  
+**Default**: `false`  
+Find folders only
 
 
 ### options.recursive
@@ -45,7 +45,7 @@ If `false` then `path` would be the only level for search
 ### options.relative
 **Type**: _Boolean_   
 **Default**: `false`  
-Cut the input folder path from the results path
+Cut the `path` from the results
 
 
 ### options.filter
@@ -54,22 +54,39 @@ Cut the input folder path from the results path
 
 ## Usage
 ```javascript
-const ReadDirRec = require('readdirrec');
+const rdr = require('readdirrec');
 
-await ReadDirRec(folder, { filter: file => /config\.js/.test(file) })
+// Cut root_dir part from path of each file/folder
+await rdr(folder, { relative: true })
+
+// Get folders only
+await rdr(folder, { folders_only: true })
+
+// Get both files ond folder
+await rdr(folder, { files_only: false, folders_only: false })
+
+
+// Different filters
+await rdr(folder, { filter: file => /config\.js/.test(file) })
 // => ['config.js']
 
-await ReadDirRec(folder, { filter: { ext: '.js' } })
+await rdr(folder, { filter: { ext: '.js' } })
 // => ['file1.js', 'file2.js']
 
-await ReadDirRec(folder, { filter: { ext: ['.js', '.zip'] } })
+await rdr(folder, { filter: { ext: ['.js', '.zip'] } })
 // => ['file1.js', 'file2.js', 'archive.zip']
-
-
-// Synchronous version
-ReadDirRec.sync(folder, {})
-// => [ ... ]
 ```
+
+
+
+## Changelog 
+#### v3.0.0 (2020-09-04):
+- removed synchronous version
+- removed `try/catch` wrapper, so now module throws all exceptions as it should be
+- fixed a bunch of different bugs
+
+
+
 
 
 ## Related
